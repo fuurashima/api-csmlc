@@ -1,0 +1,1 @@
+// archivo simulado: index.js
