@@ -92,7 +92,7 @@ app.listen(process.env.PORT || 3001, () => {
   console.log('✅ Servidor corriendo en el puerto', process.env.PORT || 3001);
 });
 
-// ✅ Endpoint para recibir datos desde WordPress sin token
+// 🌐 Endpoint público para formularios como Gravity Forms (sin auth)
 app.post('/api/public/alumnos', async (req, res) => {
   const {
     nombre_alumno,
@@ -103,7 +103,7 @@ app.post('/api/public/alumnos', async (req, res) => {
     medio_conocimiento
   } = req.body;
 
-  console.log('📩 Recibido desde Gravity Forms:', req.body);
+  console.log('📩 Recibido desde formulario público:', req.body);
 
   if (!nombre_alumno || !curso || !nombre_apoderado) {
     return res.status(400).json({ message: 'Faltan campos obligatorios.' });
@@ -117,9 +117,9 @@ app.post('/api/public/alumnos', async (req, res) => {
       [nombre_alumno, curso, nombre_apoderado, telefono_apoderado, email_apoderado, medio_conocimiento]
     );
     await connection.end();
-    res.json({ message: 'Alumno registrado correctamente (desde WP).' });
+    res.json({ message: 'Alumno registrado correctamente (público).' });
   } catch (error) {
-    console.error('❌ Error SQL desde Gravity:', error);
-    res.status(500).json({ message: 'Error al registrar alumno desde WordPress.' });
+    console.error('❌ Error desde /api/public/alumnos:', error);
+    res.status(500).json({ message: 'Error al registrar alumno.' });
   }
 });
